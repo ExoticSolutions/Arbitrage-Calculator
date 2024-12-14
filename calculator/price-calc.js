@@ -5,15 +5,15 @@ module.exports = async function (price1, price2) {
 
   const { ETHEQ1, ETHEQ2 } = convertToETH(price1, price2, ETH_Price);
   const goddogPerPair = calculatePerPair(ETHEQ1, ETHEQ2);
-  const arbOpportunity = calculateArbOpportunity(goddogPerPair);
-  const lowerTick = calculateLowerTick(arbOpportunity);
+  const recommendedCurrentPrice = calculateArbOpportunity(goddogPerPair);
+  const lowerTick = calculateLowerTick(goddogPerPair);
   const upperTick = lowerTick * 3;
 
   return {
     ETHEQ1,
     ETHEQ2,
     goddogPerPair,
-    arbOpportunity,
+    recommendedCurrentPrice,
     lowerTick,
     upperTick,
   };
@@ -21,7 +21,7 @@ module.exports = async function (price1, price2) {
 
 async function ethereumPrice(price1, price2) {
   const ethPrice = await priceFinder(
-    "0x42161084d0672e1d3F26a9B53E653bE2084ff19C",
+    "0x4200000000000000000000000000000000000006",
   );
 
   return ethPrice;
@@ -39,8 +39,8 @@ function calculateArbOpportunity(pricePerPair) {
   return pricePerPair * 0.958;
 }
 
-function calculateLowerTick(arbOpportunityPrice) {
-  const percentReduction = arbOpportunityPrice * 0.042;
+function calculateLowerTick(recommendedCurrentPrice) {
+  const percentReduction = recommendedCurrentPrice * 0.042;
 
-  return arbOpportunityPrice - percentReduction;
+  return recommendedCurrentPrice - percentReduction;
 }

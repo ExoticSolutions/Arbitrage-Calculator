@@ -1,6 +1,9 @@
 const readLine = require("node:readline");
 const priceFinder = require("./prices/price-helper");
 const think = require("./calculator/price-calc");
+const express = require("express");
+const app = express();
+const port = 3000;
 const goddogPair_CA = "0x25E2DAe20f0b251a4cCF5AC1ff04C9A24E7c0140";
 
 const r1 = readLine.createInterface({
@@ -10,6 +13,7 @@ const r1 = readLine.createInterface({
 
 getSecondPair();
 
+//use for cli prompts
 async function getSecondPair() {
   r1.question(
     "Enter the address of the token you would like to pair (must be an ethereum contract): ",
@@ -51,3 +55,24 @@ function validateContractAddress(address) {
     return false;
   }
 }
+
+app.get("/:pair", async function (req, res) {
+  const { params } = req;
+  const { pair } = params;
+  const isCAValid = validateContractAddress(pair);
+
+  if (isCAValid) {
+    const price1 = await priceFinder(goddogPair_CA);
+    const price2 = await priceFinder(pair);
+
+    const results = await think(price1, price2);
+    outputResults(results);
+    res.json(results);
+  } else {
+    res.json({ error: "Pair is invalid" });
+  }
+});
+
+app.listen(port, () => {
+  console.log("Listening");
+});
