@@ -1,4 +1,4 @@
-git clone 
+git clone https://github.com/ExoticSolutions/Arbitrage-Calculator.git
 npm install 
 node index.js
 paste in the contract address of the pool of the token you want to pair 
