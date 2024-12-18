@@ -4,7 +4,7 @@ const think = require("./calculator/price-calc");
 const express = require("express");
 const app = express();
 const port = 3000;
-const goddogPair_CA = "0x25E2DAe20f0b251a4cCF5AC1ff04C9A24E7c0140";
+const goddogPair_CA = "0xDDf7d080C82b8048BAAe54e376a3406572429b4e";
 
 const r1 = readLine.createInterface({
   input: process.stdin,
@@ -29,7 +29,7 @@ async function getSecondPair() {
       } else {
         getSecondPair();
       }
-    },
+    }
   );
 }
 
@@ -39,7 +39,7 @@ function outputResults(results) {
   console.log("Goddog per your selected token: ", results.goddogPerPair);
   console.log(
     "The currentPrice being 0.958 for arbitrage: ",
-    results.arbOpportunity,
+    results.arbOpportunity
   );
   console.log("Lower Tick: ", results.lowerTick);
   console.log("Upper tick: ", results.upperTick);

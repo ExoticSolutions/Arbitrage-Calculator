@@ -8,6 +8,7 @@ module.exports = async function (price1, price2) {
   const recommendedCurrentPrice = calculateArbOpportunity(goddogPerPair);
   const lowerTick = calculateLowerTick(goddogPerPair);
   const upperTick = lowerTick * 3;
+  const sqrtPriceX96 = Number(calculateSqrtPriceX96(goddogPerPair));
 
   return {
     ETHEQ1,
@@ -16,12 +17,13 @@ module.exports = async function (price1, price2) {
     recommendedCurrentPrice,
     lowerTick,
     upperTick,
+    sqrtPriceX96,
   };
 };
 
 async function ethereumPrice(price1, price2) {
   const ethPrice = await priceFinder(
-    "0x4200000000000000000000000000000000000006",
+    "0x4200000000000000000000000000000000000006"
   );
 
   return ethPrice;
@@ -43,4 +45,10 @@ function calculateLowerTick(recommendedCurrentPrice) {
   const percentReduction = recommendedCurrentPrice * 0.042;
 
   return recommendedCurrentPrice - percentReduction;
+}
+
+function calculateSqrtPriceX96(price) {
+  const sqrt = Math.sqrt(price);
+  const Q96 = BigInt(2) ** BigInt(96);
+  return BigInt(Math.floor(sqrt * Number(Q96)));
 }
