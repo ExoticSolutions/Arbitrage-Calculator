@@ -1,9 +1,10 @@
+require("dotenv").config();
 const readLine = require("node:readline");
 const priceFinder = require("./prices/price-helper");
 const think = require("./calculator/price-calc");
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3030;
 const goddogPair_CA = "0xDDf7d080C82b8048BAAe54e376a3406572429b4e";
 
 const r1 = readLine.createInterface({
@@ -74,5 +75,5 @@ app.get("/:pair", async function (req, res) {
 });
 
 app.listen(port, () => {
-  console.log("Listening");
+  console.log("Listening at", { port });
 });
